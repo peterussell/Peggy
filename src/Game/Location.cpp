@@ -117,7 +117,7 @@ Location::printExits()
 	}
 
 	if( east>=0 ) {
-		cout << " [EAST]\t";
+		cout << " [EAST]\t\t";
 		world.getLocationById( east )->printName();
 	}
 
@@ -126,7 +126,7 @@ Location::printExits()
 		world.getLocationById( south )->printName();
 	}
 	if( west>=0 ) {
-		cout << " [WEST]\t";
+		cout << " [WEST]\t\t";
 		world.getLocationById( west )->printName();
 	}
 }
