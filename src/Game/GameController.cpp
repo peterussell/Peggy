@@ -26,7 +26,9 @@ GameController::run()
 	while ( result ) {
 		// get input
 		cout << "> ";
-		getline( cin, cmd );
+		if(!getline( cin, cmd )) {
+			break;
+		}
 		transform( cmd.begin(), cmd.end(), cmd.begin(), (int(*)(int))toupper );
 		result = doCommand( cmd );
 	}
