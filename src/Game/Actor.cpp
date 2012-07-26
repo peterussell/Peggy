@@ -11,6 +11,15 @@ Actor::Actor(
 {
 	cout << "My name is " << name << " and I am in ";
 	currentLocation->printName();
+
+	// tmp
+	Item i = Item( 42, "item", "Peggy's Other Item", "This is a description of Peggy's Item" );
+
+	addToInventory( i );
+	printInventory();
+
+	// end tmp
+
 }
 
 Actor::~Actor()
@@ -47,4 +56,39 @@ Actor::look()
 {
 	currentLocation->printExits();
 	currentLocation->printAllItems();
+}
+
+void
+Actor::printInventory()
+{
+	if( inventory.size() <= 0 ) {
+		cout << "Your inventory is empty" << endl;
+	}
+
+	cout << "Inventory" << endl;
+
+	int count = 1;
+	for( vector<Item>::iterator it = inventory.begin(); it != inventory.end(); ++it ) {
+
+		cout << count++ << ". ";
+		it->printName();
+		cout << "   ";
+		it->printDescription();
+		cout << endl;
+	}
+}
+
+void
+Actor::addToInventory( const Item& item )
+{
+	inventory.push_back( item );
+}
+
+void
+Actor::removeFromInventory( const size_t id )
+{
+	/* TODO:
+			Find the item in the inventory vector and remove it.
+			Update this function to return the item we've just removed.
+	*/
 }

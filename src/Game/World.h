@@ -11,8 +11,10 @@ class World
 		World();
 		virtual ~World();
 
-		void					movePeggy( const string& );
+		void					peggyMove( const string& );
 		void					peggyLook();
+		void					peggyPrintInventory();
+		void					peggyDropFromInventory( const string& );
 		Location*			getLocationById( int );
 
 	private:

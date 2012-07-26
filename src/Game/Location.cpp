@@ -100,7 +100,7 @@ Location::printAllItems()
 	cout << endl;
 
 	cout << "There are " << items.size() << " items in " << name << endl;
-	for( vector<Item>::iterator it = items.begin(); it != items.end(); ++it ) {
+	for( vector<Item>::iterator it = items.begin(); it!= items.end(); ++it ) {
 		it->printName();
 	}
 	cout << endl;

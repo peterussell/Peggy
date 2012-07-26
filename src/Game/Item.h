@@ -9,8 +9,9 @@ using namespace std;
 class Item
 {
 	public:
-		Item( const size_t ID, const string& n="NoName", const string& d=NULL ) :
+		Item( const size_t ID, const string& sn="NoShortName", const string& n="NoName", const string& d=NULL ) :
 			id( ID ),
+			shortName( sn ),
 			name( n ),
 			description( d ) { }
 		virtual ~Item() { }
@@ -20,6 +21,7 @@ class Item
 
 	protected:
 		size_t id;
+		string shortName;
 		string name;
 		string description;
 };

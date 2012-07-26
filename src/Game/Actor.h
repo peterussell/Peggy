@@ -2,7 +2,10 @@
 #define GAME_ACTOR_H
 
 #include "Location.h"
+#include "Item.h"
+
 #include <string.h>
+#include <vector>
 
 class Actor
 {
@@ -14,10 +17,14 @@ class Actor
 		void 					setCurrentLocation( Location* );
 		void 					printCurrentLocation();
 		void					look();
+		void					printInventory();
+		void					addToInventory( const Item& );
+		void					removeFromInventory( const size_t );
 
 	private:
-		string			name;
-		Location*		currentLocation;
+		string				name;
+		Location*			currentLocation;
+		vector<Item>	inventory;
 };
 
 #endif

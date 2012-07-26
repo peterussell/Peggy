@@ -30,16 +30,16 @@ World::World() {
 	locations.push_back( Location( *this, 22, "Artery Articulation", -1, 23, -1, 21 ) );
 	locations.push_back( Location( *this, 23, "Acid Splash Mountain", 10, -1, -1, 22 ) );
 
-	locations[0].addItem( Item( 0, "Ticket Booth Item", "This is an item in the Ticket Booth" ) );
-	locations[3].addItem( Item( 3, "Tax Return Alley Item", "This is an item in Tax Return Alley" ) );
-	locations[7].addItem( Item( 7, "Second Aid Tent Item", "This is an item in the Second Aid Tent" ) );
-	locations[11].addItem( Item( 11, "Freak Fall Item", "This is an item in the Freak Fall" ) );
-	locations[15].addItem( Item( 15, "Spam Range Item", "This is an item in Spam Range" ) );
-	locations[19].addItem( Item( 19, "Ebalming Mountain Item", "This is an embalming mountain item" ) );
-	locations[21].addItem( Item( 21, "Artery Articulation Item", "This is an Artery Articulation item" ) );
+	locations[0].addItem( Item( 0, "ticket", "Ticket Booth Item", "This is an item in the Ticket Booth" ) );
+	locations[3].addItem( Item( 3, "tax", "Tax Return Alley Item", "This is an item in Tax Return Alley" ) );
+	locations[7].addItem( Item( 7, "second", "Second Aid Tent Item", "This is an item in the Second Aid Tent" ) );
+	locations[11].addItem( Item( 11, "freak", "Freak Fall Item", "This is an item in the Freak Fall" ) );
+	locations[15].addItem( Item( 15, "spam", "Spam Range Item", "This is an item in Spam Range" ) );
+	locations[19].addItem( Item( 19, "embalming", "Ebalming Mountain Item", "This is an embalming mountain item" ) );
+	locations[21].addItem( Item( 21, "artery", "Artery Articulation Item", "This is an Artery Articulation item" ) );
 
-	locations[7].addItem( Item ( 8, "Second Aid Tent Item 2", "This is the second item in the Second Aid Tent" ) );
-	locations[15].addItem( Item ( 16, "Spam Range Item 2", "This is the second item in Spam Range" ) );
+	locations[7].addItem( Item ( 8, "second2", "Second Aid Tent Item 2", "This is the second item in the Second Aid Tent" ) );
+	locations[15].addItem( Item ( 16, "spam2", "Spam Range Item 2", "This is the second item in Spam Range" ) );
 
 	peggy = new Actor( "Peggy", locations[0] );
 }
@@ -49,7 +49,7 @@ World::~World() {
 }
 
 void
-World::movePeggy( const string& dName )
+World::peggyMove( const string& dName )
 {
 	Direction direction = getDirection( dName );
 	if( direction==INVALID ) {
@@ -111,4 +111,33 @@ void
 World::peggyLook()
 {
 	peggy->look();
+}
+
+void
+World::peggyPrintInventory()
+{
+	peggy->printInventory();
+}
+
+void
+World::peggyDropFromInventory( const string& cmdParam )
+{
+	cout << "Param: " << cmdParam << endl;
+
+	/* TODO:
+			1. Figure out what the parameter is. It could be:
+					a) an int, specifying the index of the item from the list we printed (it should be the item's vector index +1)
+					b) a short name, eg. "sack" for a Big Brown Sack
+					c) the full name, eg. "Big Brown Sack"
+			2. Translate the parameter to an item ID. This function will be needed in the Location, Inventory and ContainerItem classes,
+					so it probably makes sense to create an ItemHelpers class with static GetItemId( const string&, vector<Item>* ) and
+					GetItemId( const size_t, vector<Item>* ) functions, these can then be referenced by any class that has an Item collection
+					stored in it.
+					ON SECOND THOUGHT: maybe anything with an Item collection should inherit from an abstract class that has these functions
+					already in it... yeah, that sounds better.
+			3. Get the item from the inventory (dropItem( ... ) will need to be modified to return an Item) and add it to the 
+					current location.
+
+					Note: peggyAddItemToInventory( .. ) should be similiar but the other way around.
+	*/
 }
