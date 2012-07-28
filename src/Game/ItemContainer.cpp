@@ -15,7 +15,25 @@ ItemContainer::add( const Item& item )
 void
 ItemContainer::remove( const size_t id )
 {
-	cout << "ItemContainer.removeItem() called" << endl;
+	cout << "remove( " << id << " ) called." << endl;
+	cout << "Searching for the item to remove..." << endl;
+
+	int pos=0;
+	for( vector<Item>::iterator it = items.begin(); it != items.end(); ++it ) {
+
+		if( it->getId()==id ) {
+			cout << "FOUND!" << endl;
+			
+			cout << "size before" << size() << endl;
+			items.erase( items.begin()+pos );
+			cout << "size after" << size() << endl;
+			return;
+		} else {
+			cout << "Not found :(" << endl;
+		}
+
+	pos++;
+	}
 }
 
 size_t

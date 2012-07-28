@@ -19,6 +19,8 @@ class Item
 		void printName();
 		void printDescription() const;
 
+		size_t getId() { return id; }
+
 	protected:
 		size_t id;
 		string shortName;

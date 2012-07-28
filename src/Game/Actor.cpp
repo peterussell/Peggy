@@ -13,10 +13,14 @@ Actor::Actor(
 	currentLocation->printName();
 
 	// tmp
-	Item i = Item( 42, "item", "Peggy's Other Item", "This is a description of Peggy's Item" );
+	Item i = Item( 43, "item43", "Peggy's Item 43", "This is a description of Peggy's 43rd Item" );
+	Item i2 = Item( 44, "item44", "Peggy's Item 44", "This is a description of Peggy's 44th Item" );
+	Item i3 = Item( 42, "item", "Peggy's Other Item", "This is a description of Peggy's Item" );
 
 	cout << "Size of inventory " << inventory.size() << endl;
 	addToInventory( i );
+	addToInventory( i2 );
+	addToInventory( i3 );
 	printInventory();
 	inventory.remove( 42 );
 	inventory.getItemIdFromString( "pete's awesome item" );
@@ -75,8 +79,12 @@ Actor::addToInventory( const Item& item )
 void
 Actor::removeFromInventory( const string& id )
 {
+	if( inventory.size()<=0 ) {
+		cout << "There's nothing in your inventory to remove." << endl;
+		return;
+	}
 	// TODO: convert string id to a size_t and pass to inventory.remove( size_t id )
 	cout << "Attempting to remove id " << id << endl;
-	inventory.getItemIdFromString( id );
-	//inventory.remove( id );
+	size_t itemId = inventory.getItemIdFromString( id );
+	//inventory.remove( itemId );
 }
