@@ -15,11 +15,13 @@ Actor::Actor(
 	// tmp
 	Item i = Item( 42, "item", "Peggy's Other Item", "This is a description of Peggy's Item" );
 
+	cout << "Size of inventory " << inventory.size() << endl;
 	addToInventory( i );
 	printInventory();
-
+	inventory.remove( 42 );
+	inventory.getItemIdFromString( "pete's awesome item" );
+	cout << "Size of inventory " << inventory.size() << endl;
 	// end tmp
-
 }
 
 Actor::~Actor()
@@ -61,34 +63,20 @@ Actor::look()
 void
 Actor::printInventory()
 {
-	if( inventory.size() <= 0 ) {
-		cout << "Your inventory is empty" << endl;
-	}
-
-	cout << "Inventory" << endl;
-
-	int count = 1;
-	for( vector<Item>::iterator it = inventory.begin(); it != inventory.end(); ++it ) {
-
-		cout << count++ << ". ";
-		it->printName();
-		cout << "   ";
-		it->printDescription();
-		cout << endl;
-	}
+	inventory.printAllItems();
 }
 
 void
 Actor::addToInventory( const Item& item )
 {
-	inventory.push_back( item );
+	inventory.add( item );
 }
 
 void
-Actor::removeFromInventory( const size_t id )
+Actor::removeFromInventory( const string& id )
 {
-	/* TODO:
-			Find the item in the inventory vector and remove it.
-			Update this function to return the item we've just removed.
-	*/
+	// TODO: convert string id to a size_t and pass to inventory.remove( size_t id )
+	cout << "Attempting to remove id " << id << endl;
+	inventory.getItemIdFromString( id );
+	//inventory.remove( id );
 }
