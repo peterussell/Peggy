@@ -3,6 +3,7 @@
 
 #include "Location.h"
 #include "Item.h"
+#include "Inventory.h"
 
 #include <string.h>
 #include <vector>
@@ -18,13 +19,13 @@ class Actor
 		void 					printCurrentLocation();
 		void					look();
 		void					printInventory();
-		void					addToInventory( const Item& );
-		void					removeFromInventory( const size_t );
+		void					addToInventory( const Item& item );
+		void					removeFromInventory( const string& id );
 
 	private:
 		string				name;
 		Location*			currentLocation;
-		vector<Item>	inventory;
+		Inventory			inventory;
 };
 
 #endif
