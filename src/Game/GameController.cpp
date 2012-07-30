@@ -1,5 +1,6 @@
 #include "GameController.h"
 #include "Location.h"
+#include "../Core/StringHelpers.h"
 
 #include <iostream>
 #include "string.h"
@@ -29,7 +30,7 @@ GameController::run()
 		if( !getline( cin, cmd ) ) {
 			break;
 		}
-		transform( cmd.begin(), cmd.end(), cmd.begin(), (int(*)(int))toupper );
+		StringHelpers::toUpper( cmd );
 		result = doCommand( cmd );
 	}
 	return 0;
@@ -62,7 +63,7 @@ GameController::doCommand( const string& cmd ) {
 			world.peggyPrintInventory();
 			cout << endl;
 		} else {
-			world.peggyDropFromInventory( cmdParam );
+			world.peggyDrop( cmdParam );
 		}
 
 	} else if ( cmdName.compare( "GO" ) == 0 ) {
@@ -91,7 +92,13 @@ GameController::doCommand( const string& cmd ) {
 			gameStarted = true;
 		}
 	} else if( cmdName.compare( "TAKE" ) == 0 ) {
-		cout << "Taking an item.." << endl;
+		if( cmdParam.length() == 0 ) {
+			cout << "Pick an item to take." << endl;
+			world.peggyLook();
+			cout << endl;
+		} else {
+			world.peggyTake( cmdParam );
+		}
 	} else if( cmdName.compare( "TALK" ) == 0 ) {
 		cout << "Talking to another player.." << endl;
 	} else if( cmdName.compare( "USE" ) == 0 ) {

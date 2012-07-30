@@ -22,6 +22,8 @@ class Item
 		size_t getId() const { return id; }
 		string getName() const { return name; }
 		string getShortName() const { return shortName; }
+		string getNameUpper() const;
+		string getShortNameUpper() const;
 
 	protected:
 		size_t id;

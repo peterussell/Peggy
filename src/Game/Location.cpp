@@ -82,28 +82,29 @@ Location::getAdjacentLocationId( const Direction& d )
 void
 Location::addItem( const Item& item )
 {
-	items.push_back( item );
+	items.add( item );
 }
 
-Item
-Location::removeItem( const Item& item )
+void
+Location::removeItem( const string& someIdentifier, Item& removedItem )
 {
+	if( items.size() <= 0 ) {
+		return;
+	}
+
+	int itemId = items.getItemIdFromString( someIdentifier );
+	if( itemId < 0 ) {
+		cout << "Couldn't find " << someIdentifier << " in " << name << endl;
+		return;
+	}
+
+	items.remove( itemId, removedItem );
 }
 
 void
 Location::printAllItems()
 {
-	if ( items.size() < 1 ) {
-		cout << "This place is devoid of anything interesting." << endl;
-		return;
-	}
-	cout << endl;
-
-	cout << "There are " << items.size() << " items in " << name << endl;
-	for( vector<Item>::iterator it = items.begin(); it!= items.end(); ++it ) {
-		it->printName();
-	}
-	cout << endl;
+	items.printAllItems();
 }
 
 void

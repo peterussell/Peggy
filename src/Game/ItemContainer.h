@@ -28,10 +28,6 @@ class ItemContainer
 
 	protected:
 		vector<Item> items;
-	private:
-		size_t		getItemIdFromIdString( const string& idString ) const;
-		size_t		getItemIdFromName( const string& name ) const;
-		size_t		getItemIdFromShortName( const string& shortName ) const;
 };
 
 #endif

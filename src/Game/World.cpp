@@ -120,7 +120,18 @@ World::peggyPrintInventory()
 }
 
 void
-World::peggyDropFromInventory( const string& cmdParam )
+World::peggyTake( const string& cmdParam )
+{
+	Item removed = Item( -1, "", "", "" );
+	peggy->getCurrentLocation()->removeItem( cmdParam, removed );
+
+	if( removed.getId() != -1 ) {
+		peggy->addToInventory( removed );
+	}
+}
+
+void
+World::peggyDrop( const string& cmdParam )
 {
 	Item removed = Item( -1, "", "", "" );
 	peggy->removeFromInventory( cmdParam, removed );

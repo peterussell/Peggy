@@ -14,7 +14,8 @@ class World
 		void					peggyMove( const string& );
 		void					peggyLook();
 		void					peggyPrintInventory();
-		void					peggyDropFromInventory( const string& );
+		void					peggyTake( const string& cmdParam );
+		void					peggyDrop( const string& cmdParam );
 		Location*			getLocationById( int );
 
 	private:

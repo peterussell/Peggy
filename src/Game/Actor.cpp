@@ -68,6 +68,7 @@ void
 Actor::addToInventory( const Item& item )
 {
 	inventory.add( item );
+	cout << "Picked up " << item.getName() << "." << endl;
 }
 
 void

@@ -47,10 +47,10 @@ ItemContainer::getItemIdFromString( const string& name ) const
 		if( checkForId && it->getId()==id ) {
 			// Found Item by its ID
 			return id;
-		} else if( strcmp( it->getShortName().c_str(), name.c_str() )==0 ) {
+		} else if( strcmp( it->getShortNameUpper().c_str(), name.c_str() )==0 ) {
 			// Found Item by its short name
 			return it->getId();
-		} else if( strcmp( it->getName().c_str(), name.c_str() )==0 ) {
+		} else if( strcmp( it->getNameUpper().c_str(), name.c_str() )==0 ) {
 			// Found Item by its long name
 			return it->getId();
 		}
@@ -58,22 +58,4 @@ ItemContainer::getItemIdFromString( const string& name ) const
 
 	// Didn't find item
 	return -1;
-}
-
-size_t
-ItemContainer::getItemIdFromIdString( const string& idString ) const
-{
-	cout << "ItemContainer.getItemIdByIdString() called" << endl;
-}
-
-size_t
-ItemContainer::getItemIdFromName( const string& name ) const
-{
-	cout << "ItemContainer.getItemIdByName() called" << endl;
-}
-
-size_t
-ItemContainer::getItemIdFromShortName( const string& shortName ) const
-{
-	cout << "ItemContainer.getItemIdByShortName() called" << endl;
 }

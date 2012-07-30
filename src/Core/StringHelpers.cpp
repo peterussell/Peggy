@@ -3,6 +3,12 @@
 #include <iostream>
 #include <sstream>
 
+void
+StringHelpers::toUpper( string& input )
+{
+	transform( input.begin(), input.end(), input.begin(), (int(*)(int))toupper );
+}
+
 size_t
 StringHelpers::stringToInt( const string& input )
 {

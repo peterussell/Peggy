@@ -2,6 +2,7 @@
 #define _PEGGY_GAME_LOCATION_H
 
 #include "Item.h"
+#include "LocationItems.h"
 
 #include <iostream>
 #include <fstream>
@@ -55,18 +56,17 @@ class Location
 		int getAdjacentLocationId( const Direction& );
 
 		void addItem( const Item& );
-		Item removeItem( const Item& );
+		void removeItem( const string& someIdentifier, Item& removedItem );
 		void printAllItems();
 		void printExits();
 
 	private:
-		int						id;
-		string				name;
-		string				description;
-		int 					north, east, south, west;
-		vector<Item>	items;
-		World&				world;
-		// list of characters
+		int								id;
+		string						name;
+		string						description;
+		int 							north, east, south, west;
+		LocationItems			items;
+		World&						world;
 };
 
 #endif
