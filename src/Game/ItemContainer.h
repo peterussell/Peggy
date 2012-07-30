@@ -12,10 +12,17 @@ class ItemContainer
 		ItemContainer() { };
 		virtual ~ItemContainer() { };
 
-		size_t		size() const;
+		int				size() const;
 		void			add( const Item& item );
-		void			remove( const size_t id );
-		size_t		getItemIdFromString( const string& name ) const;
+		void			remove( const size_t id, Item& deletedItem ); // returns the item that was removed
+
+		/* Checks the Container for the Item specified as a string.
+		 * Arguments:
+		 *  name - name of the item. Can either be an ID, the item's short name, 
+		 *				 or the item's long name.
+		 * Returns: the ID of the item if found in the Container, -1 otherwise.
+		 */
+		int		getItemIdFromString( const string& name ) const;
 
 		virtual void			printAllItems() = 0;
 

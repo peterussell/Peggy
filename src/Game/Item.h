@@ -16,10 +16,12 @@ class Item
 			description( d ) { }
 		virtual ~Item() { }
 
-		void printName();
+		void printName() const;
 		void printDescription() const;
 
-		size_t getId() { return id; }
+		size_t getId() const { return id; }
+		string getName() const { return name; }
+		string getShortName() const { return shortName; }
 
 	protected:
 		size_t id;

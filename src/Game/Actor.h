@@ -20,7 +20,7 @@ class Actor
 		void					look();
 		void					printInventory();
 		void					addToInventory( const Item& item );
-		void					removeFromInventory( const string& id );
+		void					removeFromInventory( const string& someIdentifier, Item& removedItem );
 
 	private:
 		string				name;

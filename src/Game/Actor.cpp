@@ -9,22 +9,16 @@ Actor::Actor(
 :	name( n ), 
 	currentLocation( &l )
 {
-	cout << "My name is " << name << " and I am in ";
 	currentLocation->printName();
 
-	// tmp
+	// tmp - delete these after 'take' is implemented
 	Item i = Item( 43, "item43", "Peggy's Item 43", "This is a description of Peggy's 43rd Item" );
 	Item i2 = Item( 44, "item44", "Peggy's Item 44", "This is a description of Peggy's 44th Item" );
 	Item i3 = Item( 42, "item", "Peggy's Other Item", "This is a description of Peggy's Item" );
 
-	cout << "Size of inventory " << inventory.size() << endl;
 	addToInventory( i );
 	addToInventory( i2 );
 	addToInventory( i3 );
-	printInventory();
-	inventory.remove( 42 );
-	inventory.getItemIdFromString( "pete's awesome item" );
-	cout << "Size of inventory " << inventory.size() << endl;
 	// end tmp
 }
 
@@ -77,14 +71,19 @@ Actor::addToInventory( const Item& item )
 }
 
 void
-Actor::removeFromInventory( const string& id )
+Actor::removeFromInventory( const string& someIdentifier, Item& removedItem )
 {
 	if( inventory.size()<=0 ) {
-		cout << "There's nothing in your inventory to remove." << endl;
+		cout << "There's nothing in your inventory to drop." << endl;
 		return;
 	}
-	// TODO: convert string id to a size_t and pass to inventory.remove( size_t id )
-	cout << "Attempting to remove id " << id << endl;
-	size_t itemId = inventory.getItemIdFromString( id );
-	//inventory.remove( itemId );
+
+	int itemId = inventory.getItemIdFromString( someIdentifier );
+	if( itemId < 0 ) {
+		cout << "That item isn't in your inventory." << endl;
+		return;
+	}
+
+	inventory.remove( itemId, removedItem );
+	cout << "Dropped " << removedItem.getName() << "." << endl;
 }

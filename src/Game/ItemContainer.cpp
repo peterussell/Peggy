@@ -1,6 +1,7 @@
 #include "ItemContainer.h"
+#include "../Core/StringHelpers.h"
 
-size_t
+int
 ItemContainer::size() const
 {
 	return items.size();
@@ -13,34 +14,50 @@ ItemContainer::add( const Item& item )
 }
 
 void
-ItemContainer::remove( const size_t id )
+ItemContainer::remove( const size_t id, Item& deletedItem )
 {
-	cout << "remove( " << id << " ) called." << endl;
-	cout << "Searching for the item to remove..." << endl;
+	if( id < 0 || items.size() <= 0 ) {
+		deletedItem = Item( -1, "", "", "" );
+	}
 
-	int pos=0;
-	for( vector<Item>::iterator it = items.begin(); it != items.end(); ++it ) {
-
-		if( it->getId()==id ) {
-			cout << "FOUND!" << endl;
-			
-			cout << "size before" << size() << endl;
-			items.erase( items.begin()+pos );
-			cout << "size after" << size() << endl;
+	for( int i=0; i<items.size(); i++ ) {
+		if ( items[i].getId()==id ) {
+			deletedItem = items[i];
+			items.erase( items.begin()+i );
 			return;
-		} else {
-			cout << "Not found :(" << endl;
 		}
-
-	pos++;
 	}
 }
 
-size_t
+int
 ItemContainer::getItemIdFromString( const string& name ) const
 {
-	cout << "ItemContainer.getItemIdFromString() called" << endl;
-	cout << "-- string passed in: " << name << endl;
+
+	int id = StringHelpers::stringToInt( name );
+
+	// If the string passed in was an ID, check for it when we iterate
+	// through the items.
+	bool checkForId = false;
+	if( id >= 0 ) {
+		checkForId = true;
+	}
+
+	for( vector<Item>::const_iterator it = items.begin(); it != items.end(); ++it ) {
+
+		if( checkForId && it->getId()==id ) {
+			// Found Item by its ID
+			return id;
+		} else if( strcmp( it->getShortName().c_str(), name.c_str() )==0 ) {
+			// Found Item by its short name
+			return it->getId();
+		} else if( strcmp( it->getName().c_str(), name.c_str() )==0 ) {
+			// Found Item by its long name
+			return it->getId();
+		}
+	}
+
+	// Didn't find item
+	return -1;
 }
 
 size_t

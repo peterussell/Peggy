@@ -122,22 +122,10 @@ World::peggyPrintInventory()
 void
 World::peggyDropFromInventory( const string& cmdParam )
 {
-	cout << "Param: " << cmdParam << endl;
+	Item removed = Item( -1, "", "", "" );
+	peggy->removeFromInventory( cmdParam, removed );
 
-	/* TODO:
-			1. Figure out what the parameter is. It could be:
-					a) an int, specifying the index of the item from the list we printed (it should be the item's vector index +1)
-					b) a short name, eg. "sack" for a Big Brown Sack
-					c) the full name, eg. "Big Brown Sack"
-			2. Translate the parameter to an item ID. This function will be needed in the Location, Inventory and ContainerItem classes,
-					so it probably makes sense to create an ItemHelpers class with static GetItemId( const string&, vector<Item>* ) and
-					GetItemId( const size_t, vector<Item>* ) functions, these can then be referenced by any class that has an Item collection
-					stored in it.
-					ON SECOND THOUGHT: maybe anything with an Item collection should inherit from an abstract class that has these functions
-					already in it... yeah, that sounds better.
-			3. Get the item from the inventory (dropItem( ... ) will need to be modified to return an Item) and add it to the 
-					current location.
-
-					Note: peggyAddItemToInventory( .. ) should be similiar but the other way around.
-	*/
+	if( removed.getId() != -1 ) {
+		peggy->getCurrentLocation()->addItem( removed );
+	}
 }

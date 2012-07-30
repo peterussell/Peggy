@@ -1,8 +1,7 @@
 #include "Item.h"
 
-
 void
-Item::printName()
+Item::printName() const
 {
 	cout << name << endl;
 }
