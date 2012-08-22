@@ -1,0 +1,97 @@
+{
+    "World": {
+        "Peggy": {
+            "CurrentLocation": 0,
+            "Health": 100,
+            "Strength": 5,
+            "Intelligence": 5,
+            "Charm": 5,
+            "Inventory": {
+                "Item": {
+                    "ID": 0,
+                    "Name": "Notebook",
+                    "Synonyms": [
+                        "pad",
+                        "book"
+                    ],
+                    "ShortDescription": "a notebook",
+                    "LongDescription": "a recently purchased notebook with something hastily written on the first page"
+                }
+            }
+        },
+        "Map": {
+
+					"Location": {
+						"ID": 0,
+							"Name": "Ticket Booth",
+							"Adjacent": [
+								 2,
+								 5,
+								-1,
+								-1
+							],
+							"Items": {
+								"Item": {
+									"ID": 0,
+									"Name": "Ticket Stub",
+									"Synonyms": [
+										"stub",
+										"ticket stub"
+									],
+									"ShortDescription": "a ticket stub",
+									"LongDescription": "a torn ticket stub covered in splashes of dusty dried blood",
+									"Weight": 1
+								}
+							}
+					},
+
+					"Location": {
+						"ID": 5,
+						"Name": "Bowling Ball Pit",
+						"Adjacent": [
+							-1,
+							 6,
+							 9,
+							 0
+						],
+						"Items": {
+							"Item": {
+								"ID": 1,
+								"Name": "Right Eye",
+								"Synonyms": [
+									"eye",
+									"eyeball"
+								],
+								"ShortDescription": "an eyeball",
+								"LongDescription": "Tommy's right eyeball, balanced precariously on top of an overhead beam",
+								"Weight": 2,
+								"GameCompletionPercentage": 10
+							},
+							"Item": {
+								"ID": 2,
+								"Name": "Crowbar",
+								"Synonyms": [
+									"jimmy bar",
+									"bar,"
+								],
+								"ShortDescription": "a crowbar",
+								"LongDescription": "A sturdy black crowbar about two feet long. The hooked end is heavily scratched and has paint missing, looks like someone dropped it in a hurry",
+								"Weight": 10
+							}
+						}
+					},
+
+					"Location": {
+						"ID": 6,
+						"Name": "Soul Twister",
+						"Adjacent": [
+							-1,
+							 7,
+							-1,
+							 5
+						],
+						"Items": { }
+					}
+				}
+    }
+}
