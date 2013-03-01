@@ -8,9 +8,15 @@ Item::printName() const
 }
 
 void
-Item::printDescription() const
+Item::printShortDescription() const
 {
 	cout << description << endl;
+}
+
+void
+Item::printLongDescription() const
+{
+	cout << longDescription << endl;
 }
 
 string

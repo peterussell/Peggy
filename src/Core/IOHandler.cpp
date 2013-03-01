@@ -1,15 +1,18 @@
 #include "IOHandler.h"
 
-IOHandler::IOHandler() {
+IOHandler::IOHandler()
+{
 	//todo: IOHandler initialization code goes here
 }
 
-IOHandler::~IOHandler() {
+IOHandler::~IOHandler()
+{
 	//todo: IO handler destruction code goes here
 }
 
 void
-IOHandler::printWelcomeScreen() {
+IOHandler::printWelcomeScreen()
+{
 	cout << "> = = = = = = = = = = = = = = = = = = = = = = = = = = = = <" << endl;
 	cout << "|                                                         |" << endl;
 	cout << "|                  * PEGGY'S ADVENTURES *                 |" << endl;
@@ -46,4 +49,23 @@ IOHandler::printCommands() {
 	cout << "   Uses the item and prints the outcome of using it." << endl;
 	cout << "> 'quit', 'q', or 'exit'" << endl;
 	cout << "   Quit the game." << endl << endl;
+}
+
+void IOHandler::loadWorld( const string filePath )
+{
+	if( filePath == "" ) {
+		cout << "Error loading world, no path specified." << endl;
+		return;
+	}
+
+	if( &_jsonReader == NULL ) {
+		_jsonReader = PJsonReader();
+	}
+
+	_jsonReader.parse( filePath );
+}
+
+void
+IOHandler::saveWorld()
+{
 }

@@ -14,6 +14,6 @@ Inventory::printAllItems()
 		cout << " " << count++ << ". ";
 		it->printName();
 		cout << "    ";
-		it->printDescription();
+		it->printShortDescription();
 	}
 }

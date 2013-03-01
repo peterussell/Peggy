@@ -1,17 +1,22 @@
 #include "GameController.h"
 #include "Location.h"
 #include "../Core/StringHelpers.h"
+#include "../Core/PJsonWriter.h"
 
 #include <iostream>
 #include "string.h"
 using namespace std;
 
-GameController::GameController() {
-	// todo: set up a world, players, items etc
+GameController::GameController()
+{
+	// world initialization
+	//string worldFile = "data/default_world.json";
+	string worldFile = "data/default_world.json";
+	cout << "Loading world from file \"" << worldFile << "\"." << endl;
+
+	ioh.loadWorld( worldFile );
 	ioh = IOHandler();
 	ioh.printWelcomeScreen();
-
-	// world initialization
 }
 
 GameController::~GameController()

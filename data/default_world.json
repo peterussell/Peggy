@@ -1,25 +1,25 @@
 {
-    "World": {
-        "Peggy": {
-            "CurrentLocation": 0,
-            "Health": 100,
-            "Strength": 5,
-            "Intelligence": 5,
-            "Charm": 5,
-            "Inventory": {
-                "Item": {
-                    "ID": 0,
-                    "Name": "Notebook",
-                    "Synonyms": [
-                        "pad",
-                        "book"
-                    ],
-                    "ShortDescription": "a notebook",
-                    "LongDescription": "a recently purchased notebook with something hastily written on the first page"
-                }
-            }
-        },
-        "Map": {
+		"World": {
+				"Peggy": {
+						"CurrentLocation": 0,
+						"Health": 100,
+						"Strength": 5,
+						"Intelligence": 5,
+						"Charm": 5,
+						"Inventory": {
+								"Item": {
+										"ID": 0,
+										"Name": "Notebook",
+										"Synonyms": [
+												"pad",
+												"book"
+										],
+										"ShortDescription": "a notebook",
+										"LongDescription": "a recently purchased notebook with something hastily written on the first page"
+								}
+						}
+				},
+				"Map": {
 
 					"Location": {
 						"ID": 0,
@@ -93,5 +93,5 @@
 						"Items": { }
 					}
 				}
-    }
+		}
 }

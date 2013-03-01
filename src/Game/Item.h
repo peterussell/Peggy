@@ -17,7 +17,8 @@ class Item
 		virtual ~Item() { }
 
 		void printName() const;
-		void printDescription() const;
+		void printShortDescription() const;
+		void printLongDescription() const;
 
 		size_t getId() const { return id; }
 		string getName() const { return name; }
@@ -30,6 +31,7 @@ class Item
 		string shortName;
 		string name;
 		string description;
+		string longDescription;
 };
 
 #endif
