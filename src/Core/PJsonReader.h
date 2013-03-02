@@ -25,6 +25,9 @@ class PJsonReader
 		PJsonObjectNode* parseObject( const string& contents, int& index );
 		PJsonStringNode* parseString( const string& contents, int& index );
 		PJsonIntNode* parseInteger( const string& contents, int& index);
+		PJsonArrayNode* parseArray( const string& contents, int& index);
+		PJsonArrayNode::ArrayType getArrayType( const char& c );
+		vector<PJsonNode*> parseStringArray( const string& contents, int& index );
 		int goToNextQuote( const string& contents, int& index );
 };
 #endif

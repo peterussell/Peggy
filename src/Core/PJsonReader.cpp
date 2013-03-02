@@ -73,17 +73,22 @@ PJsonReader::parseObject( const string& contents, int& index )
 			cout << "Finished parsing a string node. Value is ";
 			cout << ((PJsonStringNode*)node)->getData() << endl;
 			break;
+
 		case INTEGER:
 			node = parseInteger( contents, index );
 			cout << "Finished parsing an int node. Value is ";
 			cout << ((PJsonIntNode*)node)->getData() << endl;
 			break;
+
 		case ARRAY:
-			cout << "array";
+			node = parseArray( contents, index );
+			cout << "Finished parsing an array node. Value is ";
 			break;
+
 		case BOOLEAN:
 			cout << "bool";
 			break;
+
 		case NULLOBJ:
 			cout << "null object";
 			break;
@@ -103,16 +108,6 @@ PJsonReader::eatWhiteSpace( const string& contents, int& index )
 	while( isspace( contents[index] ) ) {
 		index++;
 	}
-
-	// drop back one space
-	//index--;
-	// debugging
-	cout << "Finished eating white space. Now at position " << index << ": ";
-	for( int i=0; i<20; i++ ) {
-		cout << contents[index+i];
-	}
-	cout << endl;
-	// end debugging
 }
 
 PJsonReader::NodeType
@@ -204,15 +199,14 @@ PJsonReader::parseName( const string& contents, int& index )
 PJsonStringNode*
 PJsonReader::parseString( const string& contents, int& index )
 {
+	while( contents[index++] != '"' ) { } // skip past opening quote
+
 	string strVal = "";
-	while( true ) {
-		char c = contents[index];
-		if( !isspace( c ) ) {
-			strVal.append( &contents[index++] );
-		} else {
-			break;
-		}
+	while( contents[index] != '"' ) {
+		strVal += contents[index++];
 	}
+
+	while( contents[index++] != ',' ) { } // skip past trailing comma
 	return new PJsonStringNode( strVal );
 }
 
@@ -237,8 +231,108 @@ PJsonReader::parseInteger( const string& contents, int& index )
 	{
 		val = atoi( strVal.c_str() );
 	}
-
 	return new PJsonIntNode( val );
+}
+
+PJsonArrayNode*
+PJsonReader::parseArray( const string& contents, int& index )
+{
+	while( contents[index++] != '[' ) { } // skip past opening bracket
+
+	PJsonArrayNode* node;
+	string strVal = "";
+	char c;
+	while( true ) {
+		cout << "Character is " << contents[index];
+		if( contents[index] == ']' || index == contents.length() ) {
+			cout << "==], breaking" << endl;
+			break;
+		}
+		if( isspace( contents[index] ) ) {
+			cout << " is a space, skipping" << endl;
+			index++;
+		} else {
+			cout << " is a valid char, appending" << endl;
+			index++;
+		}
+	}
+	index++; // skip past the closing bracket
+
+	cout << "Array contents: " << strVal << endl;
+
+	if( strVal != "" ) {
+		PJsonArrayNode::ArrayType type = getArrayType( strVal[0] );
+		switch( type ) {
+			case PJsonArrayNode::INTEGER:
+				cout << "Parsing an int array!" << endl;
+				break;
+			case PJsonArrayNode::BOOLEAN:
+				cout << "Parsing a boolean array!" << endl;
+				break;
+			case PJsonArrayNode::STRING:
+			default:
+				cout << "Parsing a string array!" << endl;
+				break;
+		}
+	}
+
+	return node;
+	//cout << "array contents: " << strVal << endl << endl << endl;
+	//while( true ) {
+	//	if( contents[index] == ']' ) {
+	//		break;
+	//	} else if( contents[index] == '[' ) {
+	//		index++;
+	//	} else if( isspace( contents[index] ) ) {
+	//		eatWhiteSpace( contents, index );
+	//	} else {
+	//		PJsonArrayNode::ArrayType type = getArrayType( contents[index] );
+	//		switch( type ) {
+	//			case PJsonArrayNode::INTEGER:
+	//				cout << "Parsing an int array!" << endl;
+	//				break;
+	//			case PJsonArrayNode::BOOLEAN:
+	//				cout << "Parsing a bool array!" << endl;
+	//				break;
+	//			case PJsonArrayNode::STRING:
+	//			default:
+	//				vector<PJsonNode*> data = parseStringArray( contents, index );
+	//				cout << ((PJsonStringNode*)data[0])->getData() << endl;
+	//				break;
+	//		}
+	//		break;
+	//	}
+	//}
+}
+
+vector<PJsonNode*>
+PJsonReader::parseStringArray( const string& contents, int& index )
+{
+	vector<PJsonNode*> data = vector<PJsonNode*>();
+	return data;
+}
+
+PJsonArrayNode::ArrayType
+PJsonReader::getArrayType( const char& c )
+{
+	switch( tolower( c ) ) {
+		case '"':
+			return PJsonArrayNode::STRING;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			return PJsonArrayNode::INTEGER;
+		case 't':
+		case 'f':
+			return PJsonArrayNode::BOOLEAN;
+	}
 }
 
 int
