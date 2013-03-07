@@ -17,10 +17,11 @@ class PJsonNode
 class PJsonObjectNode : public PJsonNode
 {
 	public:
-		PJsonObjectNode( const vector<PJsonNode>& children );
+		PJsonObjectNode( const vector<PJsonNode*>& children );
+		void addChild( const PJsonNode& node );
 
 	private:
-		vector<PJsonNode> children;
+		vector<PJsonNode*> children;
 };
 
 class PJsonStringNode : public PJsonNode
@@ -46,7 +47,7 @@ class PJsonIntNode : public PJsonNode
 class PJsonArrayNode : public PJsonNode
 {
 	public:
-		PJsonArrayNode( const vector<PJsonNode>& data );
+		PJsonArrayNode( const vector<PJsonNode*>& data );
 		enum ArrayType { STRING, INTEGER, BOOLEAN };
 
 	private:

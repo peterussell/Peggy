@@ -1,7 +1,9 @@
 #include "PJsonReader.h"
 
 #include <fstream>
+#include <sstream>
 #include <stack>
+#include <algorithm>
 
 PJsonReader::PJsonReader()
 {
@@ -62,35 +64,29 @@ PJsonReader::parseObject( const string& contents, int& index )
 	switch( getNodeType( contents[index] ) ) {
 		case OBJECT:
 		{
-			//PJsonObjectNode* objNode = parseObject( contents, index );
-			//objNode->name = nodeName;
-			//cout << "I've parsed a node, its name is " << objNode->name << endl;
 			node = parseObject( contents, index );
 			break;
 		}
 		case STRING:
 			node = parseString( contents, index );
-			cout << "Finished parsing a string node. Value is ";
-			cout << ((PJsonStringNode*)node)->getData() << endl;
 			break;
 
 		case INTEGER:
 			node = parseInteger( contents, index );
-			cout << "Finished parsing an int node. Value is ";
-			cout << ((PJsonIntNode*)node)->getData() << endl;
 			break;
 
 		case ARRAY:
 			node = parseArray( contents, index );
-			cout << "Finished parsing an array node. Value is ";
 			break;
 
 		case BOOLEAN:
 			cout << "bool";
+			// TODO
 			break;
 
 		case NULLOBJ:
 			cout << "null object";
+			// TODO
 			break;
 	}
 	node->name = nodeName;
@@ -158,43 +154,7 @@ PJsonReader::parseName( const string& contents, int& index )
 		}
 	}
 	return name;
-
-	//string name = "";
-	//if( contents[index] != '"' ) {
-	//	cout << "PJsonReader Error: object names must start with \" (at position " << index << "." << endl;
-	//} else {
-	//	index++;
-	//}
-
-	//while( contents[index] != '"' ) {
-	//	name.append( 1, contents[index++] );
-	//	if( index == contents.length() ) {
-	//		cout << "PJsonReader Error: EOF while parsing object name. Started at " << startPos << "." << endl;
-	//		return NULL;
-	//	}
-	//}
-	//index++; // move past the closing quote
-	//
-	//eatWhiteSpace( contents, index );
-	//if( contents[index] != ':' ) {
-	//	cout << "PJsonReader Error: expected ':' after object name (at index " << index << "." << endl;
-	//} else {
-	//	index++;
-	//	eatWhiteSpace( contents, index );
-	//}
 }
-
-//PJsonObjectNode*
-//PJsonReader::parseObject( const string& contents, int& index )
-//{
-//	cout << "Parsing object node, starting at ";
-//	for( int i=0; i<20; i++ ) {
-//		cout << contents[index+i];
-//	}
-//	cout << endl;
-//
-//	return new PJsonObjectNode( vector<PJsonNode>() );
-//}
 
 PJsonStringNode*
 PJsonReader::parseString( const string& contents, int& index )
@@ -213,9 +173,7 @@ PJsonReader::parseString( const string& contents, int& index )
 PJsonIntNode*
 PJsonReader::parseInteger( const string& contents, int& index )
 {
-	// get the whole string
 	char c;
-	cout << "parsing an integer" << endl;
 	string strVal = "";
 	while( true ) {
 		c = contents[index];
@@ -237,79 +195,85 @@ PJsonReader::parseInteger( const string& contents, int& index )
 PJsonArrayNode*
 PJsonReader::parseArray( const string& contents, int& index )
 {
-	while( contents[index++] != '[' ) { } // skip past opening bracket
+	while( contents[index++] != '[' ) { } // find opening bracket and skip past it
 
-	PJsonArrayNode* node;
-	string strVal = "";
+	string innards = "";
 	char c;
 	while( true ) {
-		cout << "Character is " << contents[index];
+		c = contents[index];
 		if( contents[index] == ']' || index == contents.length() ) {
-			cout << "==], breaking" << endl;
 			break;
 		}
 		if( isspace( contents[index] ) ) {
-			cout << " is a space, skipping" << endl;
 			index++;
 		} else {
-			cout << " is a valid char, appending" << endl;
+			innards += c;
 			index++;
 		}
 	}
 	index++; // skip past the closing bracket
 
-	cout << "Array contents: " << strVal << endl;
-
-	if( strVal != "" ) {
-		PJsonArrayNode::ArrayType type = getArrayType( strVal[0] );
-		switch( type ) {
-			case PJsonArrayNode::INTEGER:
-				cout << "Parsing an int array!" << endl;
-				break;
-			case PJsonArrayNode::BOOLEAN:
-				cout << "Parsing a boolean array!" << endl;
-				break;
-			case PJsonArrayNode::STRING:
-			default:
-				cout << "Parsing a string array!" << endl;
-				break;
+	int eatFrom = 0;
+	eatWhiteSpace( innards, eatFrom );
+	PJsonArrayNode::ArrayType type = getArrayType( innards[0] );
+	switch( type ) {
+		case PJsonArrayNode::INTEGER:
+		{
+			cout << "Parsing an int array!" << endl;
+			vector<PJsonNode*> toks = parseIntArray( innards );
+			return new PJsonArrayNode( toks );
+			break;
+		}
+		case PJsonArrayNode::BOOLEAN:
+		{
+			cout << "Parsing a boolean array!" << endl;
+			break;
+		}
+		case PJsonArrayNode::STRING:
+		default:
+		{
+			cout << "Parsing a string array!" << endl;
+			vector<PJsonNode*> toks = parseStringArray( innards );
+			return new PJsonArrayNode( toks );
+			break;
 		}
 	}
-
-	return node;
-	//cout << "array contents: " << strVal << endl << endl << endl;
-	//while( true ) {
-	//	if( contents[index] == ']' ) {
-	//		break;
-	//	} else if( contents[index] == '[' ) {
-	//		index++;
-	//	} else if( isspace( contents[index] ) ) {
-	//		eatWhiteSpace( contents, index );
-	//	} else {
-	//		PJsonArrayNode::ArrayType type = getArrayType( contents[index] );
-	//		switch( type ) {
-	//			case PJsonArrayNode::INTEGER:
-	//				cout << "Parsing an int array!" << endl;
-	//				break;
-	//			case PJsonArrayNode::BOOLEAN:
-	//				cout << "Parsing a bool array!" << endl;
-	//				break;
-	//			case PJsonArrayNode::STRING:
-	//			default:
-	//				vector<PJsonNode*> data = parseStringArray( contents, index );
-	//				cout << ((PJsonStringNode*)data[0])->getData() << endl;
-	//				break;
-	//		}
-	//		break;
-	//	}
-	//}
 }
 
 vector<PJsonNode*>
-PJsonReader::parseStringArray( const string& contents, int& index )
+PJsonReader::parseStringArray( const string& innards )
 {
 	vector<PJsonNode*> data = vector<PJsonNode*>();
+
+	istringstream iss( innards );
+	string token;
+	while( getline( iss, token, ',' ) ) {
+		PJsonStringNode n = PJsonStringNode( token );
+		data.push_back( &n );
+	}
+
 	return data;
+}
+
+vector<PJsonNode*>
+PJsonReader::parseIntArray( const string& innards )
+{
+	vector<PJsonNode*> data = vector<PJsonNode*>();
+
+	istringstream iss( innards );
+	string tok;
+	char chars[] = "\"";
+	while( getline( iss, tok, ',' ) ) {
+		//int eatFrom = 0;
+		//eatWhiteSpace( tok, eatFrom );
+
+		tok.erase( remove( tok.begin(), tok.end(), chars[0] ), tok.end() );
+		char* pEnd;
+		long int intVal = strtol( (tok.c_str()), &pEnd, 10 );
+		cout << "parseIntArray parsed: " << intVal << endl;
+	}
+
+	cout << "Size of int array created is " << data.size() << endl;
 }
 
 PJsonArrayNode::ArrayType

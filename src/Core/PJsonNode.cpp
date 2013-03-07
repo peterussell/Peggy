@@ -15,10 +15,14 @@ PJsonStringNode::getData()
 }
 
 // Object node
-PJsonObjectNode::PJsonObjectNode( const vector<PJsonNode>& c )
+PJsonObjectNode::PJsonObjectNode( const vector<PJsonNode*>& c )
 {
-	// WORKING HERE: todo - copy child nodes to private member "children"
-	children = vector<PJsonNode>();
+	//children = new vector<PJsonNode*>( c );
+}
+
+void
+PJsonObjectNode::addChild( const PJsonNode& n ) {
+	//children.push_back( n );
 }
 
 // Int node
@@ -32,7 +36,7 @@ PJsonIntNode::getData()
 }
 
 // Array node
-PJsonArrayNode::PJsonArrayNode( const vector<PJsonNode>& d )
+PJsonArrayNode::PJsonArrayNode( const vector<PJsonNode*>& d )
 {
 //	for( vector<PJsonNode>::const_iterator it = d.begin(); it != d.end(); ++it ) {
 //		//data.push_back( it );
