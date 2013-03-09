@@ -51,20 +51,18 @@ PJsonReader::parse( const string& filePath )
 PJsonObjectNode*
 PJsonReader::parseObject( const string& contents, int& index )
 {
-	stack<string> parts;
-
 	string nodeName = parseName( contents, index );
 	cout << "parseName completed, JSON object name: " + nodeName << endl;
 
 	eatWhiteSpace( contents, index );
 
 	PJsonNode* node;
-	NodeType type = getNodeType( contents[index] );
-	cout << "Node type is " << type << endl;
+
 	switch( getNodeType( contents[index] ) ) {
 		case OBJECT:
 		{
-			node = parseObject( contents, index );
+			currentRoot = parseObject( contents, index );
+			return;
 			break;
 		}
 		case STRING:
@@ -89,11 +87,10 @@ PJsonReader::parseObject( const string& contents, int& index )
 			// TODO
 			break;
 	}
-	node->name = nodeName;
-	cout << "Created a new node, name = " << node->name << endl;
-	cout << endl;
 
+	currentParent->addChild( node );
 	// WORKING HERE: handle comma after objects
+	//parseObject( contents, index );
 	parseObject( contents, index );
 }
 
