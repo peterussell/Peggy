@@ -4,11 +4,11 @@
 PJsonNode::PJsonNode( const string& n="Unitialized" )
 : name( n ) { }
 
-ostream&
-operator<<( const ostream& os, const PJsonNode& n )
-{
-	return n.doPrint( os );
-}
+//ostream&
+//operator<<( const ostream& os, const PJsonNode& n )
+//{
+//	return n.doPrint( os );
+//}
 
 // String node
 PJsonStringNode::PJsonStringNode( const string& d )
@@ -33,8 +33,6 @@ PJsonObjectNode::addChild( PJsonNode* n ) {
 
 	cout << "size of children: " << children.size() << endl;
 	children.push_back( n );
-
-	cout << "does my seg fault happen here?" << endl;
 }
 
 ostream&
@@ -67,8 +65,8 @@ PJsonArrayNode::PJsonArrayNode( const vector<PJsonNode*>& d )
 ostream&
 PJsonArrayNode::doPrint( ostream& os ) const
 {
-	for( int i=0; i<data.size(); i++ ) {
-		os << data[i] << ", ";
-	}
+	//for( int i=0; i<data.size(); i++ ) {
+	//	os << data[i] << ", ";
+	//}
 	return os;
 }

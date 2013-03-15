@@ -44,12 +44,33 @@ PJsonReader::parse( const string& filePath )
 	}
 
 	int index = 0;
-	PJsonObjectNode* root = parseObject( contents, index );
+	PJsonObjectNode* root = parseInternal( contents, index );
 	fs.close();
 }
 
 PJsonObjectNode*
-PJsonReader::parseObject( const string& contents, int& index )
+PJsonReader::parseInternal( const string& contents, int& index )
+{
+	PJsonObjectNode* root = parseObject( contents, index );
+	if( root == NULL ) {
+		cout << "PJsonReaderError: unable to parse root node." << endl;
+	}
+
+	PJsonNode* node;
+	PJsonObjectNode* currentRoot = root;
+	while( index < contents.length() ) {
+		node = parseNode( contents, index );
+		currentRoot->addChild( node );
+
+		if( typeid( *node ) == typeid( PJsonObjectNode ) ) {
+			currentRoot = (PJsonObjectNode*)node;
+		}
+		cout << "Current Root = " << currentRoot->name << "<-----" << endl;
+	}
+}
+
+PJsonNode*
+PJsonReader::parseNode( const string& contents, int& index )
 {
 	string nodeName = parseName( contents, index );
 	cout << "parseName completed, JSON object name: " + nodeName << endl;
@@ -57,26 +78,19 @@ PJsonReader::parseObject( const string& contents, int& index )
 	eatWhiteSpace( contents, index );
 
 	PJsonNode* node;
-
 	switch( getNodeType( contents[index] ) ) {
 		case OBJECT:
-		{
-			currentRoot = parseObject( contents, index );
-			return;
+			node = parseObject( contents, index );
 			break;
-		}
 		case STRING:
 			node = parseString( contents, index );
 			break;
-
 		case INTEGER:
 			node = parseInteger( contents, index );
 			break;
-
 		case ARRAY:
 			node = parseArray( contents, index );
 			break;
-
 		case BOOLEAN:
 			cout << "bool";
 			// TODO
@@ -87,11 +101,8 @@ PJsonReader::parseObject( const string& contents, int& index )
 			// TODO
 			break;
 	}
-
-	currentParent->addChild( node );
-	// WORKING HERE: handle comma after objects
-	//parseObject( contents, index );
-	parseObject( contents, index );
+	node->name = nodeName;
+	return node;
 }
 
 /* Positions the index counter at the next non-whitespace character */
@@ -151,6 +162,12 @@ PJsonReader::parseName( const string& contents, int& index )
 		}
 	}
 	return name;
+}
+
+PJsonObjectNode*
+PJsonReader::parseObject( const string& contents, int& index )
+{
+	return new PJsonObjectNode();
 }
 
 PJsonStringNode*

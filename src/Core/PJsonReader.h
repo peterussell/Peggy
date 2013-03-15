@@ -20,6 +20,8 @@ class PJsonReader
 
 		// Parsers
 		string parseName( const string& contents, int& index );
+		PJsonObjectNode* parseInternal( const string& contents, int& index );
+		PJsonNode* parseNode( const string& contents, int& index );
 		PJsonObjectNode* parseObject( const string& contents, int& index );
 		PJsonStringNode* parseString( const string& contents, int& index );
 		PJsonIntNode* parseInteger( const string& contents, int& index);
