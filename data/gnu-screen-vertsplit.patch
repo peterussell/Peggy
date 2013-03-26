@@ -1,0 +1,83 @@
+diff -rupN old/ansi.c new/ansi.c
+--- old/ansi.c	2006-05-02 05:58:25.000000000 -0700
++++ new/ansi.c	2010-12-31 14:10:12.000000000 -0800
+@@ -559,7 +559,7 @@ register int len;
+ 	    {
+ 	    case '0': case '1': case '2': case '3': case '4':
+ 	    case '5': case '6': case '7': case '8': case '9':
+-	      if (curr->w_NumArgs < MAXARGS)
++	      if (curr->w_NumArgs >= 0 && curr->w_NumArgs < MAXARGS)
+ 		{
+ 		  if (curr->w_args[curr->w_NumArgs] < 100000000)
+ 		    curr->w_args[curr->w_NumArgs] =
+diff -rupN old/pty.c new/pty.c
+--- old/pty.c	2005-12-16 10:48:09.000000000 -0800
++++ new/pty.c	2010-12-31 14:10:18.000000000 -0800
+@@ -34,7 +34,7 @@
+ #endif
+ 
+ /* for solaris 2.1, Unixware (SVR4.2) and possibly others */
+-#ifdef HAVE_SVR4_PTYS
++#if defined(HAVE_SVR4_PTYS) && !defined(__APPLE__)
+ # include <sys/stropts.h>
+ #endif
+ 
+diff -rupN old/resize.c new/resize.c
+--- old/resize.c	2007-02-06 12:44:37.000000000 -0800
++++ new/resize.c	2010-12-31 14:11:12.000000000 -0800
+@@ -111,7 +111,7 @@ int change_flag;
+   wi = D_CO;
+   he = D_LI;
+ #endif
+-  
++
+   debug2("CheckScreenSize: screen is (%d,%d)\n", wi, he);
+ 
+ #if 0 /* XXX: Fixme */
+@@ -336,7 +336,7 @@ struct display *norefdisp;
+   if (oldflayer && (l == oldflayer || Layer2Window(oldflayer) == p))
+     while (oldflayer->l_next)
+       oldflayer = oldflayer->l_next;
+-    
++
+   if (p)
+     {
+       for (d = displays; d; d = d->d_next)
+@@ -622,7 +622,7 @@ register int n;
+         : &p->w_mlines[y - p->w_histheight])
+ 
+ #define NEWWIN(y) ((y < hi) ? &nhlines[y] : &nmlines[y - hi])
+-	
++
+ #else
+ 
+ #define OLDWIN(y) (&p->w_mlines[y])
+@@ -644,6 +644,17 @@ int wi, he, hi;
+   if (wi == 0)
+     he = hi = 0;
+ 
++  if (wi > 1000)
++    {
++      Msg(0, "Window width too large, truncated");
++      wi = 1000;
++    }
++  if (he > 1000)
++    {
++      Msg(0, "Window height too large, truncated");
++      he = 1000;
++    }
++
+   if (p->w_type == W_TYPE_GROUP)
+     return 0;
+   if (p->w_width == wi && p->w_height == he && p->w_histheight == hi)
+@@ -920,8 +931,8 @@ int wi, he, hi;
+ 	      return -1;
+ 	    }
+ 	  for (; t < wi; t++)
+-	    p->w_tabs[t] = t && !(t & 7) ? 1 : 0; 
+-	  p->w_tabs[wi] = 0; 
++	    p->w_tabs[t] = t && !(t & 7) ? 1 : 0;
++	  p->w_tabs[wi] = 0;
+ 	}
+       else
+ 	{

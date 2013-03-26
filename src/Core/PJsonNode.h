@@ -12,6 +12,7 @@ class PJsonNode
 		PJsonNode( const string& node );
 		virtual ~PJsonNode() { };
 		string name;
+		PJsonNode* parent;
 		//friend ostream& operator<<( ostream& os, const PJsonNode& n );
 
 	private:

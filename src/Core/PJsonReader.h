@@ -35,6 +35,6 @@ class PJsonReader
 		// Helpers
 		void eatWhiteSpace( const string& contents, int& index );
 		NodeType getNodeType( const char& nodeStart );
-		int goToNextQuote( const string& contents, int& index );
+		void findNextDelimiter( const string& contents, int& index );
 };
 #endif

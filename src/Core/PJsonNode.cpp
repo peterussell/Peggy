@@ -32,7 +32,14 @@ PJsonObjectNode::addChild( PJsonNode* n ) {
 	cout << "child name = " << n->name << endl;
 
 	cout << "size of children: " << children.size() << endl;
+	n->parent = this;
+	cout << "the child's parent is " << n->parent->name << endl;
 	children.push_back( n );
+
+	if( n->name == "LongDescription" ) {
+		int i = 0;
+		i++;
+	}
 }
 
 ostream&

@@ -57,15 +57,25 @@ PJsonReader::parseInternal( const string& contents, int& index )
 	}
 
 	PJsonNode* node;
-	PJsonObjectNode* currentRoot = root;
+	PJsonNode* currentRoot = root;
 	while( index < contents.length() ) {
+		findNextDelimiter( contents, index );
+
+		if( contents[index] == '}' ) {
+			// step back up the tree
+			index++;
+			cout << "Stepping back up the tree. The currentRoot's parent is" << currentRoot->parent->name << endl;
+			currentRoot = currentRoot->parent;
+			continue;
+		}
+
 		node = parseNode( contents, index );
-		currentRoot->addChild( node );
+		((PJsonObjectNode*)currentRoot)->addChild( node );
 
 		if( typeid( *node ) == typeid( PJsonObjectNode ) ) {
 			currentRoot = (PJsonObjectNode*)node;
 		}
-		cout << "Current Root = " << currentRoot->name << "<-----" << endl;
+		cout << "Current Root = " << currentRoot->name << endl;
 	}
 }
 
@@ -75,6 +85,7 @@ PJsonReader::parseNode( const string& contents, int& index )
 	string nodeName = parseName( contents, index );
 	cout << "parseName completed, JSON object name: " + nodeName << endl;
 
+	index++; // skip past opening quote
 	eatWhiteSpace( contents, index );
 
 	PJsonNode* node;
@@ -149,7 +160,7 @@ PJsonReader::parseName( const string& contents, int& index )
 {
 	int startPos = index;
 
-	index = goToNextQuote( contents, index );
+	//index = goToNextQuote( contents, index ); // this should be handled by parseInternal now
 	char ch;
 	string name;
 	while( 1 ) {
@@ -161,6 +172,11 @@ PJsonReader::parseName( const string& contents, int& index )
 			name += ch;
 		}
 	}
+
+	if( name == "LongDescription" ) {
+		int i=0;
+		i++;
+	}
 	return name;
 }
 
@@ -170,17 +186,24 @@ PJsonReader::parseObject( const string& contents, int& index )
 	return new PJsonObjectNode();
 }
 
+/* Parses a string and returns a pointer to a new PJsonStringNode containing the string. Places the index after the closing quote surrounding the string. */
 PJsonStringNode*
 PJsonReader::parseString( const string& contents, int& index )
 {
 	while( contents[index++] != '"' ) { } // skip past opening quote
-
+	
 	string strVal = "";
 	while( contents[index] != '"' ) {
 		strVal += contents[index++];
 	}
+	index++; // skip past closing quote
 
-	while( contents[index++] != ',' ) { } // skip past trailing comma
+	// BROKEN HERE - this should be moved out of this method, the string parser just parses the string and places the index after the closing quote. When this is re-implemented outside of this function it should also handle closing brackets in order to close nexted PJsonObject nodes (setting the currentRoot as the node's parent).
+	//while( contents[index++] != ',' ) { } // skip past trailing comma
+
+	cout << "Finished parsing a string node. String is " << strVal << endl;
+	cout << "My current position is " << contents[index] << endl;
+	cout << "My position -1 is " << contents[index-1] << endl;
 	return new PJsonStringNode( strVal );
 }
 
@@ -313,13 +336,17 @@ PJsonReader::getArrayType( const char& c )
 	}
 }
 
-int
-PJsonReader::goToNextQuote( const string& contents, int& index )
+void
+PJsonReader::findNextDelimiter( const string& contents, int& index )
 {
-	for( int i = index; i < contents.length(); i++ ) {
-		if( contents[i] == '"' ) {
-			return i;
+	for( int i=index; i<contents.length(); i++ ) {
+		if( contents[i] == '"' || contents[i] == '}' ) {
+			index = i;
+			return;
 		}
+		//} else if( contents[i] == '}' ) {
+		//	cout << "skipping a }" << endl;
+		//	return i;
+		//}
 	}
-	return -1;
 }
