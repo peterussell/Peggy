@@ -26,20 +26,16 @@ PJsonObjectNode::PJsonObjectNode()
 	children = vector<PJsonNode*>();
 }
 
+/* TODO: needs a unit test, compare names before and after, compare children before and after */
+PJsonObjectNode::PJsonObjectNode( const PJsonObjectNode& other )
+{
+	name = other.name;
+	children = other.children;
+}
 void
 PJsonObjectNode::addChild( PJsonNode* n ) {
-	cout << "adding child..." << endl;
-	cout << "child name = " << n->name << endl;
-
-	cout << "size of children: " << children.size() << endl;
 	n->parent = this;
-	cout << "the child's parent is " << n->parent->name << endl;
 	children.push_back( n );
-
-	if( n->name == "LongDescription" ) {
-		int i = 0;
-		i++;
-	}
 }
 
 ostream&
@@ -51,6 +47,24 @@ PJsonObjectNode::doPrint( ostream& os ) const
 	return os;
 }
 
+vector<PJsonObjectNode*>
+PJsonObjectNode::getObjectChildren() const
+{
+	vector<PJsonObjectNode*> newChildren = vector<PJsonObjectNode*>();
+	for( int i=0; i<children.size(); i++) {
+		if( typeid( *children[i] ) == typeid( PJsonObjectNode ) ) {
+			cout << "Found super object " << children[i]->name << endl;
+			newChildren.push_back( (PJsonObjectNode*) children[i] );
+		}
+	}
+
+	for( int i=0; i<newChildren.size(); i++ ) {
+		cout << "new object " << newChildren[i]->name << endl;
+	}
+
+	return newChildren;
+}
+
 // Int node
 PJsonIntNode::PJsonIntNode( const int d )
 : data( d ) { }
@@ -59,6 +73,12 @@ ostream&
 PJsonIntNode::doPrint( ostream& os ) const
 {
 	return os << data;
+}
+
+void
+PJsonIntNode::doPrint2()
+{
+	cout << data << endl;
 }
 
 // Array node

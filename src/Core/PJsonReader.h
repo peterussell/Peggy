@@ -12,11 +12,15 @@ class PJsonReader
 		PJsonReader();
 		virtual ~PJsonReader();
 		void parse( const string& filePath );
+		//PJsonNode* find( const string& name, const PJsonObjectNode& startNode );
+		PJsonNode* find( const string& name,  PJsonObjectNode* startNode ) const;
 
 	private:
 		string path;
+		PJsonObjectNode* rootNode;
 		enum NodeType { OBJECT, STRING, INTEGER, ARRAY, BOOLEAN, NULLOBJ };
 		PJsonObjectNode* currentParent;
+
 
 		// Parsers
 		string parseName( const string& contents, int& index );

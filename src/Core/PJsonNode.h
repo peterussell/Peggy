@@ -33,11 +33,12 @@ class PJsonObjectNode : public PJsonNode
 {
 	public:
 		PJsonObjectNode();
+		PJsonObjectNode( const PJsonObjectNode& other );
+		vector<PJsonNode*> children;
+
 		void addChild( PJsonNode* node );
 		ostream& doPrint( ostream& os ) const;
-
-	private:
-		vector<PJsonNode*> children;
+		vector<PJsonObjectNode*> getObjectChildren() const;
 };
 
 
@@ -47,6 +48,7 @@ class PJsonIntNode : public PJsonNode
 		PJsonIntNode( const int data );
 		int getData();
 		ostream& doPrint( ostream& os ) const;
+		void doPrint2();
 
 	private:
 		int data;

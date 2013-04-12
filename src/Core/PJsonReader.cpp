@@ -46,18 +46,54 @@ PJsonReader::parse( const string& filePath )
 	int index = 0;
 	PJsonObjectNode* root = parseInternal( contents, index );
 	fs.close();
+
+	//PJsonObjectNode* found = find( "ROOT_NODE", root );
+	PJsonNode* found = find( "Health", root );
+
+	((PJsonIntNode*)found)->doPrint2();
+}
+
+PJsonNode*
+PJsonReader::find( const string& name, PJsonObjectNode* startNode ) const
+{
+	cout << "Searching " << startNode->name << " for a node called " << name << endl;
+	if( startNode->name == name ) {
+		cout << "FOUND IT!" << endl;
+		return startNode;
+	} else {
+		cout << "Didn't find it. Looking for any child nodes and searching them." << endl;
+		PJsonNode* child;
+		for( int i=0; i<startNode->children.size(); i++ ) {
+
+			child = startNode->children[i];
+			cout << ".. found a child called " << child->name << ", match? ... ";
+			if( child->name == name ) {
+				cout << "YES! Returning."  << endl;
+				return ( child );
+			} else if( typeid( *child ) == typeid( PJsonObjectNode ) ) {
+				cout << "No, but found an object - calling find on that instead." << endl;
+				PJsonNode* found = find( name, (PJsonObjectNode*)child );
+				if( found != NULL ) {
+					return found;
+				}
+			}
+			cout << "Nope." << endl;
+		}
+		cout << "Didn't find a damn thing, getting out of here." << endl;
+		return NULL;
+	}
 }
 
 PJsonObjectNode*
 PJsonReader::parseInternal( const string& contents, int& index )
 {
-	PJsonObjectNode* root = parseObject( contents, index );
-	if( root == NULL ) {
-		cout << "PJsonReaderError: unable to parse root node." << endl;
+	rootNode = parseObject( contents, index );
+	rootNode->name = "ROOT_NODE";
+	if( rootNode == NULL ) {
+		cout << "PJsonReader Error: unable to parse root node." << endl;
 	}
-
 	PJsonNode* node;
-	PJsonNode* currentRoot = root;
+	PJsonNode* currentRoot = rootNode;
 	while( index < contents.length() ) {
 		findNextDelimiter( contents, index );
 
@@ -65,6 +101,10 @@ PJsonReader::parseInternal( const string& contents, int& index )
 			// step back up the tree
 			index++;
 			cout << "Stepping back up the tree. The currentRoot's parent is" << currentRoot->parent->name << endl;
+			if( currentRoot->parent->name == rootNode->name ) {
+				cout << "Found end of file." << endl;
+				return (PJsonObjectNode*)currentRoot;
+			}
 			currentRoot = currentRoot->parent;
 			continue;
 		}
@@ -288,7 +328,6 @@ PJsonReader::parseStringArray( const string& innards )
 		PJsonStringNode n = PJsonStringNode( token );
 		data.push_back( &n );
 	}
-
 	return data;
 }
 
@@ -301,16 +340,16 @@ PJsonReader::parseIntArray( const string& innards )
 	string tok;
 	char chars[] = "\"";
 	while( getline( iss, tok, ',' ) ) {
-		//int eatFrom = 0;
-		//eatWhiteSpace( tok, eatFrom );
 
 		tok.erase( remove( tok.begin(), tok.end(), chars[0] ), tok.end() );
 		char* pEnd;
 		long int intVal = strtol( (tok.c_str()), &pEnd, 10 );
 		cout << "parseIntArray parsed: " << intVal << endl;
-	}
 
-	cout << "Size of int array created is " << data.size() << endl;
+		PJsonIntNode n = PJsonIntNode( intVal );
+		data.push_back( &n );
+	}
+	return data;
 }
 
 PJsonArrayNode::ArrayType
