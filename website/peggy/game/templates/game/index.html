@@ -1,0 +1,69 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Peggy's Adventures</title>
+
+		<!-- Boostrap -->
+		<link href="{% static 'game/css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'game/css/cover.css' %}" rel="stylesheet">
+
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<!-- Include all compiled plugins -->
+		<script src="{% static 'game/js/bootstrap.min.js' %}"></script>
+
+
+		<!-- BODY -->
+		<div class="site-wrapper">
+			<div class="site-wrapper-inner">
+				
+				<div class="cover-container">
+				
+					<div class="masthead clearfix">
+						<div class="inner">
+							
+							<h3 class="masthead-brand">Peggy's Adventures</h3>
+							<ul class="masthead-nav">
+								<li class="active"><a href="#">Home</a></li>
+								<li><a href="#">Help</a></li>
+								<li><a href="#">About</a></li>
+							</ul>
+						
+						</div>
+					</div>
+
+					<div class="inner cover">
+						<h1 class="cover-heading">Dare to save the world today?</h1>
+						<p class="lead">
+						Can a peg-legged, afro-rocking red ball save humanity from the
+						clutches of evil? Only <i>you</i> can decide.
+						</p>
+					</div>
+
+					<div class="mastfoot">
+						<div class="inner">
+							<p>
+							Twitter: <a href="https://www.twitter.com/nz_pete">nz_pete</a> |
+							GitHub: <a href="https://github.com/peterussell/Peggy">peterussell/Peggy</a>
+							</p>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+		<!-- END BODY -->
+		
+	</body>
+</html>
