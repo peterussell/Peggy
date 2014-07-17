@@ -11,7 +11,6 @@
 		<!-- Boostrap -->
 		<link href="{% static 'game/css/bootstrap.min.css' %}" rel="stylesheet">
 		<link href="{% static 'game/css/cover.css' %}" rel="stylesheet">
-		<link href="{% static 'game/css/custom.css' %}" rel="stylesheet">
 
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -23,35 +22,8 @@
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<!-- Include all compiled plugins -->
-		<script type="text/javascript" src="{% static 'game/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'game/js/bootstrap.min.js' %}"></script>
 
-
-		<script type="text/javascript">
-			
-			function execCmd( cmd ) {
-				$.getJSON( "/game/execCmd/", { cmdValue: cmd }, function( json ) {
-					var r = $( "#response" );
-					var err = $( "#error" );
-					err.empty();
-					
-					if( $( "#cmd" ).val() ) {	
-						r.append( "<span class='text-muted'>[Input]: " + cmd + "</span><br />" );
-					}
-										
-					var jsonResponse = json['message'];
-					var jsonError = json['errorMessage'];
-					if( jsonResponse ) { r.append( "[Response]: " + jsonResponse + "<br />" ); }
-					if( jsonError ) { err.append( "Error: " + jsonError ); }
-				});
-			}
-			
-			function addClickHandlers() {
-				$( "#submit-cmd" ).click( function() { execCmd( $( "#cmd" ).val() ); });
-			}
-
-			$( document ).ready( function() { addClickHandlers() });
-
-		</script>
 
 		<!-- BODY -->
 		<div class="site-wrapper">
@@ -73,16 +45,11 @@
 					</div>
 
 					<div class="inner cover">
-					
-						<div id="game-interface" class="col-md-10">
-							<h3 id="response"></h3>
-
-							<input type="text" id="cmd" />
-							<button id="submit-cmd">Submit</button>
-
-							
-							<div class="error-wrapper"><p id="error" class="error-message"></p></div>
-						</div>
+						<h1 class="cover-heading">Dare to save the world today?</h1>
+						<p class="lead">
+						Can a peg-legged, afro-rocking red ball save humanity from the
+						clutches of evil? Only <i>you</i> can decide.
+						</p>
 					</div>
 
 					<div class="mastfoot">

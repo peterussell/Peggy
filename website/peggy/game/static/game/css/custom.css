@@ -1,0 +1,5 @@
+/* Game interface styles */
+#game-interface { text-align: left; }
+#game-interface #cmd { width: 400px; }
+#game-interface .error-message { color: #d03; }
+#game-interface .error-wrapper { margin: 10px 0 0 0; text-align: left; }
